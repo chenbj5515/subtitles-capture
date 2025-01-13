@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Netflix Subtitle Snatcher",
+    "name": "Subtitle Snatcher",
     "version": "1.0",
-    "description": "Automatically copy Netflix subtitles when pressing Ctrl+C",
+    "description": "Automatically copy subtitles when pressing Ctrl+C in Netflix and YouTube",
     "icons": {
         "128": "logo.png"
     },
