@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* Reset and basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 360px;
+            padding: 24px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: hsl(0 0% 100%);
+            color: hsl(0 0% 20%);
+        }
+
+        /* Container styles */
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* 调整间距 */
+        }
+
+        /* Title styles */
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .description, .footer {
+            font-size: 14px;
+            color: hsl(0 0% 50%);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px; /* 调整字间距 */
+            line-height: 1.5; /* 调整行高 */
+        }
+
+        /* Input container */
+        .input-container {
+            position: relative;
+        }
+
+        /* Input styles */
+        .input {
+            width: 100%;
+            height: 40px;
+            padding: 8px 12px;
+            background-color: transparent;
+            border: 1px solid hsl(0 0% 80%);
+            border-radius: 6px;
+            font-size: 14px;
+            color: hsl(0 0% 20%);
+            transition: all 0.2s ease;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: hsl(0 0% 80%);
+            box-shadow: 0 0 0 2px hsl(0 0% 50% / 0.1);
+        }
+
+        .input::placeholder {
+            color: hsl(0 0% 60%);
+        }
+
+        /* Button styles */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 16px;
+            background-color: hsl(0 0% 10%);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: hsl(0 0% 30%);
+        }
+
+        .button:active {
+            background-color: hsl(0 0% 10%);
+        }
+
+        /* Status message styles */
+        .status {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .status.success {
+            color: hsl(0 0% 20%);
+        }
+
+        .status.error {
+            background-color: hsl(0 84.2% 60.2% / 0.1);
+            color: hsl(0 84.2% 60.2%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background-color: hsl(0 0% 80%);
+            margin: 8px 0; /* 调整间距 */
+        }
+
+        /* Note styles */
+        .note {
+            font-size: 12px;
+            color: hsl(0 0% 50%);
+            margin-top: 8px;
+        }
+
+        /* Link styles */
+        a {
+            color: inherit; /* 链接颜色与文本一致 */
+            text-decoration: underline; /* 添加下划线以区分链接 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h2 class="title">API Settings</h2>
+            <p class="description">
+                Set your OpenAI API Key to enable subtitle recognition. 
+                Visit the <a href="https://platform.openai.com/account/api-keys" target="_blank">official OpenAI settings page</a> to obtain your key.
+            </p>
+        </div>
+
+        <div class="input-container">
+            <input 
+                type="password" 
+                id="apiKey" 
+                class="input" 
+                placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx"
+            >
+        </div>
+
+        <button id="saveButton" class="button">
+            Save Settings
+        </button>
+
+        <p class="note">Please keep your API Key safe and do not share it with others.</p>
+
+        <div class="divider"></div>
+
+        <div>
+            <h2 class="title">Usage Guide</h2>
+            <p class="footer">
+                For Netflix: Open subtitles and press Ctrl+C to copy the current subtitle.<br>
+                For YouTube: Find a video with built-in Japanese subtitles and press Ctrl+C to copy the current screen's subtitles.
+            </p>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html> 

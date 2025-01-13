@@ -7,33 +7,21 @@
         "128": "logo.png"
     },
     "permissions": [
-        "clipboardWrite"
+        "clipboardWrite",
+        "storage"
     ],
     "host_permissions": [
         "https://*.netflix.com/*",
         "https://*.youtube.com/*"
     ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "logo.png"
+    },
     "content_scripts": [
         {
-            "matches": [
-                "https://*.netflix.com/*"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "run_at": "document_start"
-        },
-        {
-            "matches": [
-                "https://*.youtube.com/*"  
-            ],
-            "permissions": [
-                "desktopCapture"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "run_at": "document_start"
+            "matches": ["*://*.netflix.com/*", "*://*.youtube.com/*"],
+            "js": ["content.js"]
         }
     ]
 }

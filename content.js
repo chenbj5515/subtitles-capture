@@ -97,6 +97,14 @@ if (isNetflix) {
 }
 
 async function extractSubtitlesFromImage(imageBlob) {
+    // 获取API Key
+    const { openaiApiKey } = await chrome.storage.sync.get(['openaiApiKey']);
+    
+    if (!openaiApiKey) {
+        showNotification('No API Key found');
+        throw new Error('No API Key found');
+    }
+
     const base64Image = await new Promise((resolve) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result.split(',')[1]);
@@ -107,7 +115,7 @@ async function extractSubtitlesFromImage(imageBlob) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer '
+            'Authorization': `Bearer ${openaiApiKey}`
         },
         body: JSON.stringify({
             model: "gpt-4o-mini",
