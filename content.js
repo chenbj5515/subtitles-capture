@@ -2,6 +2,7 @@ let lastSubtitle = { text: '', startTime: 0 };
 let isNetflix = window.location.hostname.includes('netflix.com');
 let isYouTube = window.location.hostname.includes('youtube.com');
 let isRequestInProgress = false; // 新增变量，标记是否有请求正在进行中
+let lastCopiedTime = null; // 新增变量，记录上次ctrl+c指令的时间
 
 // Create and add notification element styles
 function addNotificationStyle() {
@@ -182,6 +183,7 @@ async function captureYoutubeSubtitle() {
 
                     await navigator.clipboard.writeText(JSON.stringify(subtitleData));
                     showNotification('Subtitle data copied to clipboard');
+                    lastCopiedTime = currentTime; // 记录上次复制的时间
                 } else {
                     showNotification('Failed to recognize subtitles');
                 }
@@ -224,6 +226,7 @@ window.addEventListener('keydown', async (e) => {
             .then(() => {
                 showNotification('Subtitle copied successfully!');
                 console.log('Copied Netflix subtitles:', subtitleData);
+                lastCopiedTime = lastSubtitle.startTime; // 记录上次复制的时间
             })
             .catch(err => {
                 showNotification('Failed to copy subtitle');
@@ -250,3 +253,33 @@ window.addEventListener('keydown', (e) => {
         }
     }
 }, true);
+
+// Listen for ctrl+r to adjust video time
+window.addEventListener('keydown', (e) => {
+    const isAdjustTimeShortcut = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r';
+    if (!isAdjustTimeShortcut) return;
+
+    e.preventDefault();
+
+    const video = document.querySelector('video');
+    if (video) {
+        console.log('lastCopiedTime:', lastCopiedTime);
+        if (lastCopiedTime !== null) {
+            video.currentTime = lastCopiedTime;
+            showNotification('Video time adjusted to last copied time: ' + lastCopiedTime + ' seconds');
+        } else {
+            const currentUrl = new URL(window.location.href);
+            const timeParam = currentUrl.searchParams.get('t');
+            if (timeParam) {
+                video.currentTime = parseFloat(timeParam);
+                showNotification('Video time adjusted to ' + timeParam + ' seconds');
+            } else {
+                showNotification('No time parameter found in URL');
+            }
+        }
+    } else {
+        showNotification('Video element not found');
+    }
+}, true);
+
+// TODO, 宣传图片，图标设计
