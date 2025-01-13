@@ -1,0 +1,39 @@
+{
+    "manifest_version": 3,
+    "name": "Netflix Subtitle Snatcher",
+    "version": "1.0",
+    "description": "Automatically copy Netflix subtitles when pressing Ctrl+C",
+    "icons": {
+        "128": "logo.png"
+    },
+    "permissions": [
+        "clipboardWrite"
+    ],
+    "host_permissions": [
+        "https://*.netflix.com/*",
+        "https://*.youtube.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.netflix.com/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://*.youtube.com/*"  
+            ],
+            "permissions": [
+                "desktopCapture"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ]
+}
