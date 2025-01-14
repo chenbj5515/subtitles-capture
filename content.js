@@ -14,8 +14,8 @@ function addNotificationStyle() {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+            background: #FFFFFF;
+            color: #000000;
             padding: 12px 24px;
             border-radius: 4px;
             z-index: 9999;
@@ -23,20 +23,31 @@ function addNotificationStyle() {
             opacity: 0;
             transform: translateY(-20px);
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .netflix-subtitle-notification.show {
             opacity: 1;
             transform: translateY(0);
         }
-        .netflix-subtitle-notification.loading::after {
-            content: '...';
-            animation: loading 1s infinite;
+        .netflix-subtitle-notification .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ccc;
+            border-top-color: transparent;
+            border-radius: 50%;
+            display: none;
+            animation: spin 1s linear infinite;
         }
-        @keyframes loading {
-            0% { content: '...'; }
-            33% { content: '....'; }
-            66% { content: '.....'; }
-            100% { content: '......'; }
+        .netflix-subtitle-notification.loading .spinner {
+            display: inline-block;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
     `;
     document.head.appendChild(style);
@@ -54,10 +65,18 @@ function showNotification(message, isLoading = false) {
     
     const notification = document.createElement('div');
     notification.className = 'netflix-subtitle-notification';
+    
     if (isLoading) {
         notification.classList.add('loading');
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        notification.appendChild(spinner);
     }
-    notification.textContent = message;
+    
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+    notification.appendChild(messageSpan);
+    
     document.body.appendChild(notification);
     
     // Trigger animation
@@ -69,12 +88,14 @@ function showNotification(message, isLoading = false) {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 3000);
-    } else {
-        // Remove loading state after 3 seconds
-        setTimeout(() => {
-            notification.classList.remove('loading');
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
+    }
+}
+
+function hideNotification() {
+    const notification = document.querySelector('.netflix-subtitle-notification');
+    if (notification) {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
     }
 }
 
@@ -192,11 +213,13 @@ async function captureYoutubeSubtitle() {
                 showNotification('Processing failed');
             } finally {
                 isRequestInProgress = false; // 标记请求结束
+                hideNotification(); // 隐藏通知
             }
         });
     } catch (err) {
         console.error('Screenshot failed:', err);
         showNotification('Screenshot failed');
+        hideNotification(); // 隐藏通知
     }
 }
 
